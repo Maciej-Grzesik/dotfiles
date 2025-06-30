@@ -7,16 +7,16 @@
 
 (defwidget album_art_widget []
   (box :class "album-art-container"
-       :visible {album_art != ""}
-    (image :class "album-art" 
-           :path album_art
-           :image-width 35
-           :image-height 35)))
+    :visible {album_art != ""}
+    (image :class "album-art"
+      :path album_art
+      :image-width 35
+    :image-height 35)))
 
 
-           
+
 (defwidget music_widget []
-  (box :class "music-widget" :orientation "h" :spacing -10
+  (box :class "music-widget" :orientation "h" :spacing -10 :style "margin-left: -20px; margin-right: 10px;"
     (eventbox :onclick "playerctl -p spotify play-pause"
       (overlay
         (album_art_widget)
@@ -24,7 +24,8 @@
           :class "music-play-status"
           :halign "center"
           :valign "center"
-        :text {music_status == "Playing" ? "⏸" : "▶"})))
+          :style "font-size: 30px; font-weight: bold; margin-right: 8px; margin-top: 2px;"
+        :text {music_status == "Playing" ? "" : ""})))
     (scroll
       :hscroll true
       :vscroll false

@@ -1,0 +1,75 @@
+# max-history=10
+# sort=-time
+# width=350
+# height=120
+# margin=10
+# padding=8
+# border-size=2
+# border-radius=6
+# font=Iosevka Nerd Font 11
+
+# background-color=#222C34FF
+# text-color=#E5E9F0FF
+# border-color=#4C566AFF
+# icons=1
+
+# on-button-left=invoke-default-action
+# on-button-right=dismiss
+# on-button-middle=exec makoctl menu -n "$id" dmenu -p 'Action:'
+# on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/message.oga
+
+# # ─── STYL DLA PILNYCH POWIADOMIEŃ (critical) ──
+# [urgency=critical]
+# background-color=#BF616AFF
+# text-color=#ECEFF4FF
+# border-color=#D08770FF
+# timeout=100
+
+# # ─── STYL DLA NORMALNYCH POWIADOMIEŃ ─────────
+# [urgency=normal]
+# background-color=#5E81ACFF
+# text-color=#ECEFF4FF
+# border-color=#81A1C1FF
+# timeout=6000
+
+# # ─── STYL DLA NISKICH POWIADOMIEŃ ────────────
+# [urgency=low]
+# background-color=#A3BE8CFF
+# text-color=#2E3440FF
+# border-color=#8FBCBBFF
+# timeout=3000
+
+font=Cozette 11
+format=<b>%a ⏵</b> %s\n%b
+sort=-time
+output=DP-2
+layer=overlay
+anchor=top-right
+background-color=#2e3440
+width=300
+height=110
+margin=5
+padding=0,5,10
+border-size=2
+border-color=#88c0d0
+border-radius=15
+icons=1
+max-icon-size=64
+default-timeout=5000
+ignore-timeout=1
+
+[urgency=normal]
+border-color=#d08770
+
+[urgency=high]
+border-color=#bf616a
+default-timeout=0
+
+[app-name=lightcord]
+border-color=#88c0d0
+
+[summary~="log-.*"]
+border-color=#a3be8c
+
+[app-name=lightcord summary~="(.*(^| )orz|ORZ|sto|STO|otl|OTL( |$).*)"]
+invisible=1

@@ -30,10 +30,12 @@ fi
 config_file="/tmp/eww_cava_config"
 echo "
 [general]
+mode = waves
 bars = 10
 framerate = 30
 autosens = 1
 sensitivity = 100
+overshot = 5
 
 [input]
 method = pipewire
@@ -46,7 +48,7 @@ data_format = ascii
 ascii_max_range = 7
 
 [smoothing]
-noise_reduction = 0.77
+noise_reduction = 1
 " > $config_file
 
 # run cava in the background
