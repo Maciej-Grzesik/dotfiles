@@ -14,47 +14,28 @@
 progressbar.memory progress {
   background-color: #f38ba8;
   box-shadow: 
-    0 0 3px rgba(243, 139, 168, 0.8),
-    0 0 8px rgba(243, 139, 168, 0.6),
-    0 0 15px rgba(243, 139, 168, 0.4),
-    0 0 25px rgba(243, 139, 168, 0.2);
-  animation: glow-memory 2s ease-in-out infinite alternate;
-}
-
-progressbar.cpu progress {
-  background-color: #a6e3a1;
-  box-shadow: 
-    0 0 3px rgba(166, 227, 161, 0.8),
-    0 0 8px rgba(166, 227, 161, 0.6),
-    0 0 15px rgba(166, 227, 161, 0.4),
-    0 0 25px rgba(166, 227, 161, 0.2);
-  animation: glow-cpu 2s ease-in-out infinite alternate;
+    0 0 1px rgba(243, 139, 168, 0.8),
+    0 0 3px rgba(243, 139, 168, 0.6),
+    0 0 6px rgba(243, 139, 168, 0.2),
+    0 0 10px rgba(243, 139, 168, 0.1);
 }
 
 progressbar.gpu progress {
+  background-color: #a6e3a1;
+  box-shadow: 
+    0 0 1px rgba(166, 227, 161, 0.8),
+    0 0 3px rgba(166, 227, 161, 0.6),
+    0 0 6px rgba(166, 227, 161, 0.2),
+    0 0 10px rgba(166, 227, 161, 0.1);
+}
+
+progressbar.cpu progress {
   background-color: #e4eba0;
   box-shadow: 
-    0 0 3px rgba(228, 235, 160, 0.8),
-    0 0 8px rgba(228, 235, 160, 0.6),
-    0 0 15px rgba(228, 235, 160, 0.4),
-    0 0 25px rgba(228, 235, 160, 0.2);
-  animation: glow-gpu 2s ease-in-out infinite alternate;
-}
-
-
-@keyframes glow-memory {
-  from { box-shadow: 0 0 3px rgba(243, 139, 168, 0.6), 0 0 8px rgba(243, 139, 168, 0.4); }
-  to { box-shadow: 0 0 5px rgba(243, 139, 168, 0.8), 0 0 12px rgba(243, 139, 168, 0.6); }
-}
-
-@keyframes glow-cpu {
-  from { box-shadow: 0 0 3px rgba(166, 227, 161, 0.6), 0 0 8px rgba(166, 227, 161, 0.4); }
-  to { box-shadow: 0 0 5px rgba(166, 227, 161, 0.8), 0 0 12px rgba(166, 227, 161, 0.6); }
-}
-
-@keyframes glow-gpu {
-  from { box-shadow: 0 0 3px rgba(228, 235, 160, 0.6), 0 0 8px rgba(228, 235, 160, 0.4); }
-  to { box-shadow: 0 0 5px rgba(228, 235, 160, 0.8), 0 0 12px rgba(228, 235, 160, 0.6); }
+    0 0 1px rgba(228, 235, 160, 0.8),
+    0 0 3px rgba(228, 235, 160, 0.6),
+    0 0 6px rgba(228, 235, 160, 0.2),
+    0 0 10px rgba(228, 235, 160, 0.1);
 }
 
 .bar-resources-icon {
