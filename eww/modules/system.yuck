@@ -1,0 +1,66 @@
+(defpoll gpu_percent :interval "3s" "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null || echo 0")
+
+(defwidget system_widget []
+  
+  (box
+    :space-evenly false :spacing -3
+    :orientation "v"
+    :valign "center"
+    :class "bar-pad-horiz"
+    
+    ; Memory
+    (box
+      :space-evenly false :orientation "h" :spacing 5
+      (label
+        :class "bar-resources-icon bar-txt-norm"
+        :text "󰘚"  ; Memory icon
+      )
+      (progress
+        :valign "center"
+        :class "bar-prog memory"
+        :value {EWW_RAM.used_mem_perc}
+      )
+      ;   (label
+        ;     :class "bar-txt-tiny bar-txt-norm"
+        ;     :text "${memory_percent}%"
+      ;   )
+    )
+    
+    ; CPU
+    (box
+      :space-evenly false :orientation "h" :spacing 5
+      (label
+        :class "bar-resources-icon bar-txt-norm"
+        :text "󰍛"  ; CPU icon
+      )
+      (progress
+        :valign "center"
+        :class "bar-prog cpu"
+        :value {EWW_CPU.avg}
+      )
+      ;   (label
+        ;     :class "bar-txt-tiny bar-txt-norm"
+        ;     :text "${cpu_percent}%"
+      ;   )
+    )
+    
+    ; GPU
+    (box
+      :space-evenly false :orientation "h" :spacing 5
+      (label
+        :class "bar-resources-icon-gpu bar-txt-norm"
+        :text "󰍹"  ; GPU icon
+      )
+      (progress
+        :valign "center"
+        :class "bar-prog gpu"
+        :value gpu_percent
+      )
+      ;   (label
+        ;     :class "bar-txt-tiny bar-txt-norm"
+        ;     :text "${gpu_percent}%"
+      ;   )
+    )
+  )
+  
+)

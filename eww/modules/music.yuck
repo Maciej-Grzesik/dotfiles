@@ -1,0 +1,45 @@
+(defpoll album_art :interval "2s" :initial "" "bash ~/.config/eww/scripts/get-album-art")
+(deflisten music_title :initial "" "playerctl -p spotify --follow metadata --format '{{ title }}' || echo ''")
+(deflisten music_artist :initial "" "playerctl -p spotify --follow metadata --format '{{ artist }}' || echo ''")
+(deflisten music_status :initial "Stopped" "playerctl -p spotify --follow status || echo 'Stopped'")
+
+
+
+(defwidget album_art_widget []
+  (box :class "album-art-container"
+       :visible {album_art != ""}
+    (image :class "album-art" 
+           :path album_art
+           :image-width 35
+           :image-height 35)))
+
+
+           
+(defwidget music_widget []
+  (box :class "music-widget" :orientation "h" :spacing -10
+    (eventbox :onclick "playerctl -p spotify play-pause"
+      (overlay
+        (album_art_widget)
+        (label
+          :class "music-play-status"
+          :halign "center"
+          :valign "center"
+        :text {music_status == "Playing" ? "⏸" : "▶"})))
+    (scroll
+      :hscroll true
+      :vscroll false
+      :halign "fill"
+      :width 90
+      (box :orientation "v" :valign "center" :spacing 2
+        (label
+          :class "music-title"
+          :xalign 0
+          :truncate true
+          :limit-width 10
+        :text {music_title != "" ? music_title : "No title"})
+        (label
+          :class "music-artist"
+          :xalign 0
+          :truncate true
+          :limit-width 10
+        :text {music_artist != "" ? music_artist : "No artist"})))))

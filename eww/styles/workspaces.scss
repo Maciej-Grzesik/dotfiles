@@ -1,0 +1,58 @@
+.workspaces-widget {
+  margin: 0;
+  padding: 0;
+}
+
+.workspace-bg {
+  background: rgba(40, 40, 40, 0.7);
+  border-radius: 15px;
+}
+
+.workspace-bar {
+  background: transparent;
+  min-height: 26px;
+}
+
+.workspace-btn {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.workspace-label {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+  color: #ffffff;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  
+  &.occupied {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  &.empty {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.workspace-active {
+  background: transparent;
+  border: none;
+  transition: margin 0.3s ease;
+}
+
+.workspace-active-label {
+  background: #dfab44;
+  
+  color: #000000;
+  border-radius: 13px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.workspace-active-bar {
+  background: #ffffff;
+  border-radius: 5px;
+  transition: margin 0.3s cubic-bezier(0.4,0,0.2,1);
+}

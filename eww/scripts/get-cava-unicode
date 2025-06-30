@@ -1,0 +1,67 @@
+#!/bin/bash
+
+bar="▁▂▃▄▅▆▇█"
+dict="s/;//g;"
+
+# creating "dictionary" to replace char with bar
+i=0
+while [ $i -lt ${#bar} ]
+do
+    dict="${dict}s/$i/${bar:$i:1}/g;"
+    i=$((i=i+1))
+done
+
+# make sure to clean pipe
+pipe="/tmp/cava.fifo"
+if [ -p $pipe ]; then
+    unlink $pipe
+fi
+mkfifo $pipe
+
+# Find Spotify audio source
+spotify_source=$(pw-record --list-targets 2>/dev/null | grep -i spotify | head -1 | awk '{print $2}' | sed 's/://') 
+
+# Fallback to default if Spotify not found
+if [ -z "$spotify_source" ]; then
+    spotify_source="auto"
+fi
+
+# write cava config
+config_file="/tmp/eww_cava_config"
+echo "
+[general]
+bars = 10
+framerate = 30
+autosens = 1
+sensitivity = 100
+
+[input]
+method = pipewire
+source = $spotify_source
+
+[output]
+method = raw
+raw_target = $pipe
+data_format = ascii
+ascii_max_range = 7
+
+[smoothing]
+noise_reduction = 0.77
+" > $config_file
+
+# run cava in the background
+cava -p $config_file &
+cava_pid=$!
+
+# cleanup function
+cleanup() {
+    kill $cava_pid 2>/dev/null
+    rm -f $pipe $config_file
+    exit
+}
+trap cleanup EXIT INT TERM
+
+# reading data from fifo
+while read -r cmd; do
+    echo $cmd | sed $dict
+done < $pipe

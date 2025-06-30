@@ -1,0 +1,44 @@
+@import "styles/workspaces.scss";
+@import "styles/cava.scss";
+@import "styles/album-art.scss";
+@import "styles/system.scss";
+
+* {
+  all: unset;
+}
+
+.bar, .bar1 {
+  border-radius: 20px;
+  background: rgba($color: #282828, $alpha: 0.7)
+}
+
+// Music controls styles
+// .music-controls {
+//   margin: 0;
+//   padding: 2px;
+// }
+
+// .music-btn {
+//   font-size: 14px;
+//   color: #ffffff;
+//   padding: 2px 4px;
+//   border-radius: 3px;
+//   transition: all 0.2s ease;
+  
+//   &:hover {
+//     background: rgba(255, 255, 255, 0.1);
+//     color: #00ff88;
+//   }
+// }
+
+// .music-section {
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .music-info {
+//   margin: 0;
+//   padding: 0;
+// }
+
+

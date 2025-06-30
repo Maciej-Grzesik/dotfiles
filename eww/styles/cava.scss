@@ -1,0 +1,27 @@
+// ...existing code...
+// Unicode cava visualizer z animowaną tęczą
+.cava-unicode {
+  margin-top: 5;
+  font-family: "JetBrains Mono", "Noto Color Emoji", monospace;
+  font-size: 20px;
+  letter-spacing: 0px;
+  color: white;
+  text-shadow: 
+    0 0 5px #ff0000,
+    0 0 10px #ff8000,
+    0 0 15px #ffff00;
+  animation: rainbow-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes rainbow-glow {
+  0% { 
+    text-shadow: 
+      0 0 5px #ff0000,
+      0 0 10px #ff8000;
+  }
+  100% { 
+    text-shadow: 
+      0 0 5px #00ffff,
+      0 0 10px #0080ff;
+  }
+}

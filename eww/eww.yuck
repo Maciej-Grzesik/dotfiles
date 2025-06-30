@@ -1,0 +1,63 @@
+(include "./modules/workspaces.yuck")
+(include "./modules/cava.yuck")
+(include "./modules/music.yuck")
+(include "./modules/system.yuck")
+
+; (defwindow calendar_win
+;   :monitor 1
+;   :geometry (geometry :x "80%" :y "30px")
+;   :stacking "fg"
+;   :focusable false
+;   (eventbox
+;     :onrightclick "eww close calendar_win"
+;     (calendar)
+;   )
+; )
+
+(defwidget bar []
+  (centerbox :orientation "h"
+    (box :class "left" :halign "start" :spacing -15
+      (music_widget)
+      (cava_unicode_widget))
+    (box :class "center" :halign "center"
+      (workspaces_widget))
+    (box :class "right" :halign "end"
+      ; (eventbox
+      ;   :onclick "eww open calendar_win"
+      ;   (label :text "${time}")
+      ; )
+      (label :text "${time}")
+      (system_widget)
+      ; (label :text "🔊 ${volume}%")
+    )
+  )
+)
+
+
+
+(defpoll volume :interval "1s" "scripts/getvol")
+(defpoll time :interval "10s" "date '+%H:%M %b %d, %Y'")
+
+(defwindow bar
+  :monitor 0
+  :windowtype "dock"
+  :geometry (geometry :x "0%"
+    :y "5px"
+    :width "100%"
+    :height "30px"
+  :anchor "top center")
+  :reserve (struts :side "top" :distance "30px")
+  :exclusive true
+  (bar))
+
+(defwindow bar1
+  :monitor 1
+  :windowtype "dock"
+  :geometry (geometry :x "0%"
+    :y "10px"
+    :width "98%"
+    :height "40px"
+  :anchor "top center")
+  :reserve (struts :side "top" :distance "30px")
+  :exclusive true
+  (bar))

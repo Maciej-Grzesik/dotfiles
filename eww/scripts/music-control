@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Music control script for eww
+# Usage: music-control {play-pause|next|previous|stop}
+
+case "$1" in
+    "play-pause")
+        if playerctl status 2>/dev/null | grep -q "Playing"; then
+            playerctl pause
+            echo "Paused"
+        else
+            playerctl play
+            echo "Playing"
+        fi
+        ;;
+    "next")
+        playerctl next
+        echo "Next track"
+        ;;
+    "previous")
+        playerctl previous
+        echo "Previous track"
+        ;;
+    "stop")
+        playerctl stop
+        echo "Stopped"
+        ;;
+    "status")
+        playerctl status 2>/dev/null || echo "No player"
+        ;;
+    *)
+        echo "Usage: $0 {play-pause|next|previous|stop|status}"
+        echo "Available players:"
+        playerctl -l 2>/dev/null || echo "No players found"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Directory for album art cache
+CACHE_DIR="$HOME/.cache/eww/album_art"
+ROUNDED_CACHE_DIR="$HOME/.cache/eww/album_art_rounded"
+mkdir -p "$CACHE_DIR"
+mkdir -p "$ROUNDED_CACHE_DIR"
+
+# Get current playing track info
+ARTIST=$(playerctl -p spotify metadata artist 2>/dev/null)
+TITLE=$(playerctl -p spotify metadata title 2>/dev/null)
+ALBUM=$(playerctl -p spotify metadata album 2>/dev/null)
+
+# Check if music is playing
+if [ -z "$ARTIST" ] || [ -z "$TITLE" ]; then
+    echo "Music is not playing"
+    exit 0
+fi
+
+# Function to create rounded image
+create_rounded_image() {
+    local input="$1"
+    local output="$2"
+    local size="35"
+    local radius="6"
+    
+    # Check if ImageMagick is available
+    if ! command -v convert &> /dev/null; then
+        echo "$input"
+        return
+    fi
+    
+    # Create rounded version
+    convert "$input" \
+        -resize "${size}x${size}^" \
+        -gravity center \
+        -extent "${size}x${size}" \
+        \( +clone -alpha extract -draw "fill black polygon 0,0 0,$radius $radius,0 fill white circle $radius,$radius $radius,0" \
+           \( +clone -flip \) -compose Multiply -composite \
+           \( +clone -flop \) -compose Multiply -composite \
+        \) -alpha off -compose CopyOpacity -composite \
+        "$output" 2>/dev/null
+    
+    if [ -f "$output" ]; then
+        echo "$output"
+    else
+        echo "$input"
+    fi
+}
+
+# Create filename for cache
+CACHE_FILE="$CACHE_DIR/$(echo "${ARTIST}_${ALBUM}_${TITLE}" | tr '/' '_' | tr ' ' '_').jpg"
+ROUNDED_FILE="$ROUNDED_CACHE_DIR/$(echo "${ARTIST}_${ALBUM}_${TITLE}" | tr '/' '_' | tr ' ' '_').png"
+
+# Try to get album art from playerctl first
+ART_URL=$(playerctl -p spotify metadata mpris:artUrl 2>/dev/null)
+
+if [ -n "$ART_URL" ]; then
+    # If we have art URL from player
+    if [[ "$ART_URL" == file://* ]]; then
+        # Local file
+        LOCAL_PATH="${ART_URL#file://}"
+        if [ -f "$LOCAL_PATH" ]; then
+            if [ ! -f "$ROUNDED_FILE" ] || [ "$LOCAL_PATH" -nt "$ROUNDED_FILE" ]; then
+                create_rounded_image "$LOCAL_PATH" "$ROUNDED_FILE"
+            else
+                echo "$ROUNDED_FILE"
+            fi
+        else
+            echo ""
+        fi
+    elif [[ "$ART_URL" == http* ]]; then
+        # Download from URL if not cached
+        if [ ! -f "$CACHE_FILE" ]; then
+            curl -s "$ART_URL" -o "$CACHE_FILE" 2>/dev/null
+        fi
+        if [ -f "$CACHE_FILE" ]; then
+            if [ ! -f "$ROUNDED_FILE" ] || [ "$CACHE_FILE" -nt "$ROUNDED_FILE" ]; then
+                create_rounded_image "$CACHE_FILE" "$ROUNDED_FILE"
+            else
+                echo "$ROUNDED_FILE"
+            fi
+        else
+            echo ""
+        fi
+    else
+        echo ""
+    fi
+else
+    # No art URL, try to find local album art
+    # Look for common album art filenames in music directory
+    MUSIC_FILE=$(playerctl -p spotify metadata xesam:url 2>/dev/null | sed 's|file://||')
+    if [ -n "$MUSIC_FILE" ] && [ -f "$MUSIC_FILE" ]; then
+        MUSIC_DIR=$(dirname "$MUSIC_FILE")
+        
+        # Common album art filenames
+        for ART_NAME in "cover.jpg" "cover.png" "folder.jpg" "folder.png" "albumart.jpg" "albumart.png" "front.jpg" "front.png"; do
+            if [ -f "$MUSIC_DIR/$ART_NAME" ]; then
+                if [ ! -f "$ROUNDED_FILE" ] || [ "$MUSIC_DIR/$ART_NAME" -nt "$ROUNDED_FILE" ]; then
+                    create_rounded_image "$MUSIC_DIR/$ART_NAME" "$ROUNDED_FILE"
+                else
+                    echo "$ROUNDED_FILE"
+                fi
+                exit 0
+            fi
+        done
+    fi
+    
+    echo ""
+fi

@@ -1,0 +1,87 @@
+; (deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces")
+; (deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+
+; (defwidget workspaces_widget []
+  ;   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}"
+    ;             :class "workspaces-widget"
+    ;     (box :class "workspaces"
+      ;          :orientation "h"
+      ;          :space-evenly true
+      ;          :halign "start"
+      ;          :spacing 10
+      ;       (label :text "${workspaces}${current_workspace}" :visible false)
+      ;       (for workspace in workspaces
+        ;         (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+          ;           (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+            ;             (label :text "${workspace.id}")
+          ;           )
+        ;         )
+      ;       )
+    ;     )
+  ;   )
+; )
+
+(deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+
+(defwidget workspaces_widget []
+  (eventbox
+    :onscroll "echo {} | sed -e \"s/up/-1/g\" -e \"s/down/+1/g\" | xargs hyprctl dispatch workspace"
+    :class "workspaces-widget"
+    (overlay
+      ; Background bar
+      (box
+        :width {26*10 + 3*(10 - 1) + 30}
+        :class "workspace-bg"
+        (box
+          :class "workspace-bar"
+          :style "padding: 0 15px;"
+        )
+      )
+      ; Workspace buttons
+      (box
+        :spacing 3
+        :space-evenly false
+        :halign "center"
+        (for workspace in workspaces
+          (button
+            :onclick "hyprctl dispatch workspace ${workspace.id}"
+            :class "workspace-btn"
+            (label
+              :valign "center"
+              :class "workspace-label ${workspace.windows > 0 ? "occupied" : "empty"}"
+              :width 26
+              :height 26
+              :text "${workspace.id}"
+            )
+          )
+        )
+      )
+      ; Active workspace indicator with smooth animation
+      ; (button
+        ;   :class "workspace-active"
+        ;   :style "
+        ;   margin-left: ${29 * (current_workspace - 1) + 15}px;
+        ;   margin-right: ${29 * (10 - current_workspace) + 15}px;
+        ;   "
+        ;   (label
+          ;     :valign "center"
+          ;     :class "workspace-active-label"
+          ;     :width 26
+          ;     :height 26
+          ;     :text "${current_workspace}"
+        ;   )
+      ; )
+      (box
+        :class "workspace-active-bar"
+        :style "
+        margin-left: ${29 * (current_workspace - 1) + 15}px;
+        margin-right: ${29 * (10 - current_workspace) + 15}px;
+        margin-top: 2px;
+        margin-bottom: 35px;
+        "
+        :width 26
+      )
+    )
+  )
+)
