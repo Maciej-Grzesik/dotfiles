@@ -87,8 +87,23 @@
   )
 )
 
-(defwidget system_widget []
+(defwidget system_widget [monitor]
   (box :space-evenly false :orientation "h" :style "margin-right: 10px;"
+    ; (eventbox
+      ;   :onclick "eww open calendar_win --arg monitor=${monitor} && sleep 0.1 && eww update open_calendar=true"
+      ;   (box
+        ;     :space-evenly false :orientation "v"
+        ;     :valign "center"
+        ;     :hexpand true
+        ;     :class "time-box"
+        ;     (label :xalign 0 :class "bar-txt-larger clr-accent"
+          ;       :text "${time.hour}:${time.minute}"
+        ;     )
+        ;     (label :xalign 0 :class "bar-txt-smaller clr-accent"
+          ;       :text "${time.day}, ${time.date}"
+        ;     )
+      ;   )
+    ; )
     (box
       :space-evenly false :orientation "v"
       :valign "center"

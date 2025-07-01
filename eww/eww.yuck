@@ -2,55 +2,8 @@
 (include "./modules/music.yuck")
 (include "./modules/system.yuck")
 (include "./modules/power.yuck")
+(include "./modules/calendar.yuck")
 
-(defvar open_calendar false)
-(defvar ANIM_ENTER `["transition: 250ms cubic-bezier(0.05,0.7,0.1,1);","transition: 250ms cubic-bezier(0,0,0,1);"]`)
-(defvar ANIM_EXIT `["transition: 180ms cubic-bezier(0.3,0,0.8,0.15);","transition: 180ms cubic-bezier(1,0,1,1);"]`)
-(defvar anim_set 0)
-
-
-(defwidget calendar_widget []
-  (box
-    :orientation "v"
-    :space-evenly false
-    (box
-      :class "calendar-header"
-      :height 50
-      (label
-        :class "calendar-title"
-        :text "Calendar"
-      )
-    )
-    (box
-      :class "calendar-content"
-      :orientation "v"
-      :style "min-height: 350px; background-color: red;"
-      (calendar)
-    )
-  )
-)
-
-(defwindow calendar_win [monitor]
-  :monitor monitor
-  :geometry (geometry
-    :x "50%"
-    :y "50px"
-    :anchor "top center"
-    :width "300px"
-    :height "400px"
-  )
-  :stacking "overlay"
-  :namespace "eww"
-  
-  (eventbox
-    :onhoverlost "eww update open_calendar=false && eww close calendar_win"
-    :onclick "eww close calendar_win"
-    (box
-      :style "background-color: white; border: 2px solid black;"
-      (calendar_widget)
-    )
-  )
-)
 
 (defwidget bar [monitor]
   (centerbox :orientation "h"
@@ -61,20 +14,10 @@
       (workspaces_widget)
     )
     (box :class "right" :halign "end" :space-evenly false
-      (system_widget)
-      (eventbox
-        :onclick "eww open calendar_win --arg monitor=${monitor}"
-        (label
-          :class "bar-icon-material bar-system-icon bar-txt-norm"
-          :text "󰃰"
-        )
-      )
+      (system_widget :monitor monitor)
     )
   )
 )
-
-
-
 
 (defpoll volume :interval "1s" "scripts/getvol")
 
