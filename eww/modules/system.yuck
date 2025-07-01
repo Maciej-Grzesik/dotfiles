@@ -1,67 +1,111 @@
 (defpoll gpu_percent :interval "3s" "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null || echo 0")
+(defpoll time
+  :initial `{"date": "6/9", "hour": "0", "minute": "0", "monthname": "Month", "day": "Not monday", "year": "2077"}`
+  :interval "5s"
+  `date +'{"date": "%d/%m", "hour": "%H", "minute": "%M", "monthname": "%B", "day": "%A", "year": "%Y"}'`
+)
+(deflisten net :initial `{ "essid": "lo", "icon": "󰤯", "level": "0" }` "scripts/net")
+(defvar WIFI_ICONS `["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]`)
+(deflisten bluetooth :initial `{"icon": "󰂲","batt_icon":"","text":"Bluetooth off"}` "scripts/bluetooth")
 
-(defwidget system_widget []
-  
+
+
+(defwidget system_info []
   (box
-    :space-evenly false :spacing -3
+    :space-evenly false :spacing -3 :width 50
     :orientation "v"
     :valign "center"
-    :class "bar-pad-horiz"
-    :width 120
-    
-    ; Memory
+    :class "system-info"
     (box
       :space-evenly false :orientation "h" :spacing 5
       (label
         :class "bar-resources-icon bar-txt-norm"
-        :text "󰘚"  ; Memory icon
+        :text "󰘚"
       )
       (progress
         :valign "center"
         :class "bar-prog memory"
         :value {EWW_RAM.used_mem_perc}
       )
-      ;   (label
-        ;     :class "bar-txt-tiny bar-txt-norm"
-        ;     :text "${memory_percent}%"
-      ;   )
     )
-    
-    ; CPU
     (box
       :space-evenly false :orientation "h" :spacing 5
       (label
         :class "bar-resources-icon bar-txt-norm"
-        :text "󰍛"  ; CPU icon
+        :text "󰍛"
       )
       (progress
         :valign "center"
         :class "bar-prog cpu"
         :value {EWW_CPU.avg}
       )
-      ;   (label
-        ;     :class "bar-txt-tiny bar-txt-norm"
-        ;     :text "${cpu_percent}%"
-      ;   )
     )
-    
-    ; GPU
     (box
       :space-evenly false :orientation "h" :spacing 5
       (label
         :class "bar-resources-icon-gpu bar-txt-norm"
-        :text "󰍹"  ; GPU icon
+        :text "󰍹"
       )
       (progress
         :valign "center"
         :class "bar-prog gpu"
         :value gpu_percent
       )
-      ;   (label
-        ;     :class "bar-txt-tiny bar-txt-norm"
-        ;     :text "${gpu_percent}%"
-      ;   )
     )
   )
-  
+)
+
+(defwidget wifi_widget []
+  (box
+    :space-evenly false :orientation "h" :spacing 5
+    :class "wifi-box"
+    (label
+      :valign "center"
+      :class "bar-icon-material bar-system-icon bar-txt-norm"
+      :text {WIFI_ICONS[net.level]}
+    )
+    
+  )
+)
+
+(defwidget bluetooth_widget []
+  (box
+    :space-evenly false :orientation "v" :spacing 0
+    :class "bluetooth-box"
+    :valign "start"
+    (label
+      :valign "center"
+      :angle -90
+      :class "bluetooth-text-small"
+      :text "${bluetooth.batt_icon}"
+    )
+    (label
+      :valign "center"
+      :class "bluetooth-text-norm"
+      :text {bluetooth.icon}
+    )
+  )
+)
+
+(defwidget system_widget []
+  (box :space-evenly false :orientation "h" :style "margin-right: 10px;"
+    (box
+      :space-evenly false :orientation "v"
+      :valign "center"
+      :hexpand true
+      :class "time-box"
+      (label :xalign 0 :class "bar-txt-larger clr-accent"
+        :text "${time.hour}:${time.minute}"
+      )
+      (label :xalign 0 :class "bar-txt-smaller clr-accent"
+        :text "${time.day}, ${time.date}"
+      )
+    )
+    ; (label :width 60 :text "🔊 ${volume}%")
+    
+    (wifi_widget)
+    (bluetooth_widget)
+    (system_info)
+    (power_widget)
+  )
 )

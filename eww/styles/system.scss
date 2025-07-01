@@ -1,10 +1,50 @@
-.bar-pad-horiz {
+.time-box {
+  margin-left: 15px;
+  margin-right: 20px;
+}
+
+.bar-txt-larger {
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.bar-txt-smaller {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.wifi-box {
+  font-size: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.bluetooth-box {
+  
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.bluetooth-text-norm {
+  margin-top: -5px;
+  font-size: 25px;
+  color: #ffffff;
+}
+
+.bluetooth-text-small {
+  margin-top: 5px;
+  margin-left: 3px;
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.system-info {
   margin-right: 10px;
 }
 
 .bar-prog trough {
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
+  min-width: 60px;
 }
 
 .bar-prog progress {
