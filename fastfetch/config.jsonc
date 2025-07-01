@@ -26,13 +26,62 @@
       "folders": "/home"
     },
     {
-      "type": "battery",
-      "key": "Battery"
+      "type": "colors",
+      "paddingLeft": 0,
+      "symbol": "circle"
     },
     {
-      "type": "colors",
-      "paddingLeft": 10,
-      "symbol": "circle"
+      "type": "custom",
+      "key": "{#bright_red}Development"
+    },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  Rust",
+      "text": "rustc --version | cut -d' ' -f2",
+      "format": "rustc {}"
+    },
+    // {
+    //   "type": "command",
+    //   "keyIcon": "",
+    //   "key": "{icon}  NodeJS",
+    //   "text": "node --version",
+    //   "format": "node {~1}"
+    // },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  Go",
+      "text": "go version | cut -d' ' -f3",
+      "format": "go {~2}"
+    },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  Python",
+      "text": "python3 --version | cut -d' ' -f2",
+      "format": "python {}"
+    },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  TypeScript",
+      "text": "tsc --version | cut -d' ' -f2",
+      "format": "typescript {}"
+    },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  Docker",
+      "text": "docker --version | cut -d' ' -f3 | sed 's/,//'",
+      "format": "docker {}"
+    },
+    {
+      "type": "command",
+      "keyIcon": "",
+      "key": "{icon}  Java",
+      "text": "java --version | head -n1 | cut -d' ' -f2",
+      "format": "java {}"
     }
   ]
 }
