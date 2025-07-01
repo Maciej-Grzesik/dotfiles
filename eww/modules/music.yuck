@@ -2,8 +2,13 @@
 (deflisten music_title :initial "" "playerctl -p spotify --follow metadata --format '{{ title }}' || echo ''")
 (deflisten music_artist :initial "" "playerctl -p spotify --follow metadata --format '{{ artist }}' || echo ''")
 (deflisten music_status :initial "Stopped" "playerctl -p spotify --follow status || echo 'Stopped'")
+(deflisten cava_unicode :initial "▁▁▁▁▁▁▁▁▁▁" "bash ~/.config/eww/scripts/get-cava-unicode")
 
+(defvar hover_music false)
 
+(defwidget cava_unicode_widget []
+  (label :class "cava-unicode"
+  :text "${cava_unicode}"))
 
 (defwidget album_art_widget []
   (box :class "album-art-container"
@@ -13,25 +18,22 @@
       :image-width 35
     :image-height 35)))
 
-
-
 (defwidget music_widget []
-  (box :class "music-widget" :orientation "h" :spacing -10 :style "margin-left: -20px; margin-right: 10px;"
-    (eventbox :onclick "playerctl -p spotify play-pause"
-      (overlay
-        (album_art_widget)
-        (label
-          :class "music-play-status"
-          :halign "center"
-          :valign "center"
-          :style "font-size: 30px; font-weight: bold; margin-right: 8px; margin-top: 2px;"
-        :text {music_status == "Playing" ? "" : ""})))
-    (scroll
-      :hscroll true
-      :vscroll false
-      :halign "fill"
-      :width 90
-      (box :orientation "v" :valign "center" :spacing 2
+  (eventbox
+    :onhover "${EWW_CMD} update hover_music=true &"
+    :onhoverlost "${EWW_CMD} update hover_music=false &"
+    
+    (box :class "music-widget" :orientation "h" :space-evenly false
+      (eventbox :onclick "playerctl -p spotify play-pause"
+        (overlay :class "music-overlay"
+          (album_art_widget)
+          (label
+            :class "music-play-status"
+            :halign "center"
+            :valign "center"
+            :style "font-size: 30px; font-weight: bold; margin-right: 8px; margin-top: 2px;"
+          :text {music_status == "Playing" ? "" : ""})))
+      (box :class "music-info" :orientation "v" :valign "center" :width 120
         (label
           :class "music-title"
           :xalign 0
@@ -43,4 +45,34 @@
           :xalign 0
           :truncate true
           :limit-width 10
-        :text {music_artist != "" ? music_artist : "No artist"})))))
+        :text {music_artist != "" ? music_artist : "No artist"}))
+      (revealer
+        :reveal {hover_music}
+        :transition "slideleft"
+        :duration "200ms"
+        (box
+          :orientation "h"
+          :valign "center"
+          :spacing 5
+          :class "music-controls"
+          (button
+            :class "bar-icon-material bar-music-btn"
+            :onclick "playerctl previous"
+            "󰒮"
+          )
+          (button
+            :class "bar-icon-material bar-music-btn"
+            :onclick "playerctl play-pause"
+            "${music_status == 'Playing' ? '' : ''}"
+          )
+          (button
+            :class "bar-icon-material bar-music-btn"
+            :onclick "playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`"
+            "󰒭"
+          )
+        )
+      )
+      (cava_unicode_widget)
+    )
+  )
+)
