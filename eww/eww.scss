@@ -3,9 +3,11 @@
 @import "styles/album-art.scss";
 @import "styles/system.scss";
 @import "styles/power.scss";
+@import "styles/music.scss";
 
 * {
   all: unset;
+  font-family: "JetBrainsMono Nerd Font";
 }
 
 // .bar, .bar1 {

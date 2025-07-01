@@ -1,5 +1,0 @@
-(deflisten cava_unicode :initial "▁▁▁▁▁▁▁▁▁▁" "bash ~/.config/eww/scripts/get-cava-unicode")
-
-(defwidget cava_unicode_widget []
-  (label :class "cava-unicode"
-  :text "${cava_unicode}"))
