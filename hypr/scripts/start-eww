@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/home/maciejkrul/.local/share/eww/target/release/eww daemon
+sleep 0.5
+/home/maciejkrul/.local/share/eww/target/release/eww open bar
+/home/maciejkrul/.local/share/eww/target/release/eww open bar1
