@@ -1,0 +1,478 @@
+(defpoll notifications :interval "2s" "cat ~/.cache/mako_notifications.json")
+
+(defwidget right_panel [monitor]
+  (eventbox
+    :class "right-panel"
+    :onhoverlost "eww update open_right_${monitor}=false"
+    (box
+      :space-evenly false
+      :halign "end"
+      :style "
+      ${(monitor == 0 ? open_right_0 : open_right_1) ? ANIM_ENTER[anim_set] : ANIM_EXIT[anim_set]}
+      ${(monitor == 0 ? open_right_0 : open_right_1) ? '' : 'margin-right: -796px;'}
+      "
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing -5
+        :halign "end"
+        :style "
+        min-width: 786px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        padding: 10px;
+        "
+        (right_panel_header :monitor monitor)
+        
+        (right_panel_content :monitor monitor)
+      )
+    )
+  )
+)
+
+(defwidget right_panel_header [monitor]
+  (box
+    :class "right-panel-header"
+    :halign "center"
+    :space-evenly false
+    :orientation "h"
+    :height 50
+    (label
+      :xalign 0
+      :hexpand true
+      :class "bar-txt-hugeass sidebar-section-title-text"
+      :text "Control Panel"
+    )
+    (label
+      :xalign 1
+      :class "bar-txt-small sidebar-section-title-text"
+      :text "Monitor ${monitor}"
+    )
+  )
+)
+
+(defwidget right_panel_content [monitor]
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 15
+    :vexpand true
+    
+    (right_panel_toggles)
+    
+    (right_panel_system)
+    
+    (right_panel_audio)
+    
+    (right_panel_notifications)
+    
+    ; (right_panel_calendar)
+  )
+)
+
+(defwidget right_panel_notifications []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 10
+    
+    (box
+      :class "right-panel-section-title"
+      (label
+        :text "Notifications"
+        :class "bar-txt-hugeass"
+        :xalign 0
+      )
+    )
+    
+    (box
+      :orientation "v"
+      :spacing 5
+      :class "right-panel-notifications-content"
+      :vexpand true
+      
+      (scroll
+        :vscroll true
+        :hscroll false
+        :max-height 300
+        :vexpand true
+        :style "margin: 5px 0;"
+        (box
+          :orientation "v"
+          :space-evenly false
+          :spacing 8
+          
+          (for notif in notifications
+            (box
+              :orientation "v"
+              :space-evenly false
+              :spacing 5
+              :class "right-panel-notification-item"
+              
+              (box
+                :orientation "h"
+                :space-evenly false
+                :spacing 10
+                (label
+                  :text {notif['app_name'] ?: "Unknown App"}
+                  :class "bar-txt-small"
+                  :xalign 0
+                  :limit-width 20
+                  :style "color: #007acc; font-weight: bold;"
+                )
+                (label
+                  :text {notif['time'] ?: ""}
+                  :class "bar-txt-smaller"
+                  :xalign 1
+                  :style "color: #888888;"
+                )
+              )
+              
+              (label
+                :text {notif['summary'] ?: "No title"}
+                :class "bar-txt"
+                :xalign 0
+                :wrap true
+                :limit-width 50
+                :style "font-weight: bold;"
+              )
+              
+              (label
+                :text {notif['body'] ?: "No content"}
+                :class "bar-txt-small"
+                :xalign 0
+                :wrap true
+                :limit-width 60
+                :style "color: #cccccc;"
+              )
+              
+              (box
+                :orientation "h"
+                :space-evenly false
+                :spacing 5
+                :halign "end"
+                (button
+                  :class "right-panel-notification-action"
+                  :onclick "echo 'Clear notification: ${notif['id'] ?: ''}'"
+                  :width 60
+                  :height 25
+                  (label
+                    :text "Clear"
+                    :class "bar-txt-smaller"
+                  )
+                )
+              )
+            )
+          )
+          
+          (revealer
+            :reveal {notifications == "[]" || notifications == "" ? true : false}
+            :transition "slidedown"
+            (box
+              :class "right-panel-no-notifications"
+              :orientation "v"
+              :spacing 10
+              :halign "center"
+              :valign "center"
+              :style "padding: 40px 20px;"
+              (label
+                :text "󰂚" 
+                :class "bar-icon-material-hugeass"
+                :style "color: #666666; font-size: 48px;"
+              )
+              (label
+                :text "No notifications"
+                :class "bar-txt"
+                :style "color: #888888;"
+              )
+            )
+          )
+        )
+      )
+      
+      (box
+        :orientation "h"
+        :halign "center"
+        :style "margin-top: 10px;"
+        (button
+          :class "right-panel-clear-all-btn"
+          :onclick "echo 'Clear all notifications'"
+          :width 120
+          :height 35
+          (label
+            :text "Clear All"
+            :class "bar-txt"
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget right_panel_toggles []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 10
+    
+    (box
+      :class "right-panel-section-title"
+      (label
+        :text "Quick Settings"
+        :class "bar-txt-hugeass"
+        :xalign 0
+      )
+    )
+    
+    (box
+      :orientation "h"
+      :space-evenly true
+      :spacing 10
+      :class "right-panel-toggles-row"
+      
+      (button
+        :class "right-panel-toggle-btn"
+        :onclick "echo 'WiFi toggle clicked'"
+        :width 80
+        :height 60
+        (box
+          :orientation "v"
+          :spacing 5
+          (label
+            :class "bar-icon-material-hugeass"
+            :text "󰤨"
+          )
+          (label
+            :class "bar-txt-small"
+            :text "WiFi"
+          )
+        )
+      )
+      
+      (button
+        :class "right-panel-toggle-btn"
+        :onclick "echo 'Bluetooth toggle clicked'"
+        :width 80
+        :height 60
+        (box
+          :orientation "v"
+          :spacing 5
+          (label
+            :class "bar-icon-material-hugeass"
+            :text "󰂯"
+          )
+          (label
+            :class "bar-txt-small"
+            :text "Bluetooth"
+          )
+        )
+      )
+      
+      (button
+        :class "right-panel-toggle-btn"
+        :onclick "echo 'Night Light toggle clicked'"
+        :width 80
+        :height 60
+        (box
+          :orientation "v"
+          :spacing 5
+          (label
+            :class "bar-icon-material-hugeass"
+            :text "󰌵"
+          )
+          (label
+            :class "bar-txt-small"
+            :text "Night"
+          )
+        )
+      )
+      
+      (button
+        :class "right-panel-toggle-btn"
+        :onclick "echo 'Power options clicked'"
+        :width 80
+        :height 60
+        (box
+          :orientation "v"
+          :spacing 5
+          (label
+            :class "bar-icon-material-hugeass"
+            :text "󰐥"
+          )
+          (label
+            :class "bar-txt-small"
+            :text "Power"
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget right_panel_system []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 10
+
+    (box
+      :class "right-panel-section-title"
+      (label
+        :text "System"
+        :class "bar-txt-hugeass"
+        :xalign 0
+      )
+    )
+    
+    (box
+      :orientation "v"
+      :spacing 8
+      :class "right-panel-system-info"
+      
+      (box
+        :orientation "h"
+        :space-evenly false
+        (label
+          :text "CPU:"
+          :class "bar-txt"
+          :xalign 0
+          :width 100
+        )
+        (label
+          :text "Loading..."
+          :class "bar-txt"
+          :xalign 0
+          :hexpand true
+        )
+      )
+      
+      (box
+        :orientation "h"
+        :space-evenly false
+        (label
+          :text "Memory:"
+          :class "bar-txt"
+          :xalign 0
+          :width 100
+        )
+        (label
+          :text "Loading..."
+          :class "bar-txt"
+          :xalign 0
+          :hexpand true
+        )
+      )
+      
+      (box
+        :orientation "h"
+        :space-evenly false
+        (label
+          :text "Disk:"
+          :class "bar-txt"
+          :xalign 0
+          :width 100
+        )
+        (label
+          :text "Loading..."
+          :class "bar-txt"
+          :xalign 0
+          :hexpand true
+        )
+      )
+    )
+  )
+)
+
+(defwidget right_panel_audio []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 10
+    
+    (box
+      :class "right-panel-section-title"
+      (label
+        :text "Audio"
+        :class "bar-txt-hugeass"
+        :xalign 0
+      )
+    )
+    
+    (box
+      :orientation "v"
+      :spacing 8
+      :class "right-panel-audio-controls"
+      
+      (box
+        :orientation "h"
+        :space-evenly false
+        :spacing 10
+        (label
+          :text "󰕾"
+          :class "bar-icon-material-large"
+        )
+        (scale
+          :min 0
+          :max 100
+          :value 50
+          :onchange "echo 'Volume: {}%'"
+          :hexpand true
+          :class "right-panel-volume-slider"
+        )
+        (label
+          :text "50%"
+          :class "bar-txt-small"
+          :width 40
+        )
+      )
+
+      (box
+        :orientation "h"
+        :space-evenly false
+        :spacing 10
+        (label
+          :text "󰃞"
+          :class "bar-icon-material-large"
+        )
+        (scale
+          :min 0
+          :max 100
+          :value 70
+          :onchange "echo 'Brightness: {}%'"
+          :hexpand true
+          :class "right-panel-brightness-slider"
+        )
+        (label
+          :text "70%"
+          :class "bar-txt-small"
+          :width 40
+        )
+      )
+    )
+  )
+)
+
+
+(defwindow right_window_0
+  :monitor 0
+  :stacking "fg"
+  :namespace "eww"
+  :geometry (geometry
+    :y "5px"
+    :x "-5px"
+    :anchor "top right"
+  )
+  (right_panel :monitor 0)
+)
+
+(defwindow right_window_1
+  :monitor 1
+  :stacking "fg"
+  :namespace "eww"
+  :geometry (geometry
+    :y "5px"
+    :x "-5px"
+    :anchor "top right"
+  )
+  (right_panel :monitor 1)
+)

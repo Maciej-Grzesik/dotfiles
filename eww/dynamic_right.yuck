@@ -1,0 +1,13 @@
+(defvar open_right_0 false)
+(defvar open_right_1 false)
+
+(defwidget right_widget [monitor]
+  (eventbox
+    :hexpand false
+    :class "dynamic-right-widget"
+    :onclick "eww update open_right_${monitor}=true"
+    
+    :onrightclick "eww update open_right_${monitor}=false"
+    (system_widget :monitor monitor)
+  )
+)

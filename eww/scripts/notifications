@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+LOGFILE="$HOME/.cache/mako_notifications.json"
+TMPFILE="$HOME/.cache/mako_notifications_tmp.json"
+
+mkdir -p "$(dirname "$LOGFILE")"
+
+# Jeśli plik nie istnieje, zainicjuj go pustą tablicą JSON
+if [ ! -f "$LOGFILE" ]; then
+  echo "[]" > "$LOGFILE"
+fi
+
+# Funkcja do dodawania nowej notyfikacji do pliku JSON
+add_notification() {
+  local notif_json="$1"
+
+  # Używamy jq do dodania elementu do tablicy
+  jq --argjson newnotif "$notif_json" '. + [$newnotif]' "$LOGFILE" > "$TMPFILE" && mv "$TMPFILE" "$LOGFILE"
+}
+
+# Nasłuchuj D-Bus Notifications i wyciągaj podstawowe dane (id, appname, summary)
+dbus-monitor "interface='org.freedesktop.Notifications'" |
+grep --line-buffered "method call" -A 20 | while read -r line; do
+  # Przykładowe parsowanie powiadomienia:
+  # Tutaj trzeba dokładniej wyciągnąć id, appname, summary itd. z dbus-monitor
+
+  # Dla uproszczenia - gdy pojawi się "string" po method call to łapiemy applikacje i summary
+  # Poniższy przykład jest prosty i wymaga dopracowania, możesz podać przykład rzeczywistego outputu dbus-monitor
+
+  # Tu wrzucimy prostą symulację — w praktyce trzeba rozbić output dbus
+  if [[ "$line" =~ string\ \"(.*)\" ]]; then
+    APPNAME="${BASH_REMATCH[1]}"
+    SUMMARY="Sample summary"
+
+    # Tworzymy JSON (tu można rozwinąć o więcej pól)
+    NOTIF_JSON=$(jq -n --arg app "$APPNAME" --arg summary "$SUMMARY" '{appname: $app, summary: $summary, timestamp: now}')
+
+    add_notification "$NOTIF_JSON"
+  fi
+done

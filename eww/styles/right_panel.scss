@@ -1,0 +1,160 @@
+.right-panel {
+  background: transparent;
+}
+
+.right-panel-header {
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.right-panel-section-title {
+  background: rgba(40, 40, 40, 0.9);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-left: 3px solid #007acc;
+}
+
+.right-panel-toggles-row {
+  background: rgba(25, 25, 25, 0.9);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.right-panel-toggle-btn {
+  background: rgba(50, 50, 50, 0.8);
+  border-radius: 6px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 200ms ease;
+}
+
+.right-panel-toggle-btn:hover {
+  background: rgba(70, 70, 70, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.right-panel-toggle-btn:active {
+  background: rgba(0, 122, 204, 0.3);
+  border-color: #007acc;
+}
+
+.right-panel-system-info {
+  background: rgba(25, 25, 25, 0.9);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.right-panel-audio-controls {
+  background: rgba(25, 25, 25, 0.9);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.right-panel-volume-slider,
+.right-panel-brightness-slider {
+  min-height: 6px;
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 3px;
+}
+
+.right-panel-volume-slider trough,
+.right-panel-brightness-slider trough {
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 3px;
+  min-height: 6px;
+}
+
+.right-panel-volume-slider highlight,
+.right-panel-brightness-slider highlight {
+  background: linear-gradient(90deg, #007acc, #00aaff);
+  border-radius: 3px;
+}
+
+.right-panel-volume-slider slider,
+.right-panel-brightness-slider slider {
+  background: #007acc;
+  border-radius: 50%;
+  min-width: 16px;
+  min-height: 16px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.right-trigger-widget {
+  margin: 0 5px;
+}
+
+.right-trigger-widget button {
+  background: rgba(40, 40, 40, 0.8);
+  border-radius: 4px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 200ms ease;
+}
+
+.right-trigger-widget button:hover {
+  background: rgba(60, 60, 60, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Notifications Section */
+.right-panel-notifications-content {
+  background: rgba(25, 25, 25, 0.9);
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.right-panel-notification-item {
+  background: rgba(40, 40, 40, 0.8);
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 200ms ease;
+}
+
+.right-panel-notification-item:hover {
+  background: rgba(50, 50, 50, 0.9);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.right-panel-notification-action {
+  background: rgba(0, 122, 204, 0.2);
+  border-radius: 4px;
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 122, 204, 0.4);
+  transition: all 150ms ease;
+  color: #007acc;
+}
+
+.right-panel-notification-action:hover {
+  background: rgba(0, 122, 204, 0.3);
+  border-color: rgba(0, 122, 204, 0.6);
+}
+
+.right-panel-no-notifications {
+  background: rgba(30, 30, 30, 0.5);
+  border-radius: 8px;
+  min-height: 150px;
+}
+
+.right-panel-clear-all-btn {
+  background: rgba(204, 70, 70, 0.2);
+  border-radius: 6px;
+  padding: 8px 16px;
+  border: 1px solid rgba(204, 70, 70, 0.4);
+  transition: all 200ms ease;
+  color: #cc4646;
+}
+
+.right-panel-clear-all-btn:hover {
+  background: rgba(204, 70, 70, 0.3);
+  border-color: rgba(204, 70, 70, 0.6);
+}
