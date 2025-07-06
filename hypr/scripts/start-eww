@@ -4,3 +4,5 @@
 sleep 0.5
 /home/maciejkrul/.local/share/eww/target/release/eww open bar
 /home/maciejkrul/.local/share/eww/target/release/eww open bar1
+/home/maciejkrul/.local/share/eww/target/release/eww open window_right_0
+/home/maciejkrul/.local/share/eww/target/release/eww open window_right_1
